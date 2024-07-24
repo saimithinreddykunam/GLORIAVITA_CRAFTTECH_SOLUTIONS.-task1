@@ -1,0 +1,68 @@
+document.addEventListener('DOMContentLoaded', function() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('dark-mode');
+    });
+    const navLinks = document.querySelectorAll('nav ul li a');
+    const sections = document.querySelectorAll('section');
+    window.addEventListener('scroll', function() {
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            if (pageYOffset >= sectionTop - 60) {
+                current = section.getAttribute('id');
+            }
+        });
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+    });
+    const modal = document.getElementById('project-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalImage = document.getElementById('modal-image');
+    const modalDescription = document.getElementById('modal-description');
+    const modalLink = document.getElementById('modal-link');
+    const closeButton = document.querySelector('.close-button');
+    document.querySelectorAll('.open-modal').forEach(button => {
+        button.addEventListener('click', function() {
+            modalTitle.textContent = this.getAttribute('data-title');
+            modalImage.src = this.getAttribute('data-image');
+            modalDescription.textContent = this.getAttribute('data-description');
+            modalLink.href = this.getAttribute('data-link');
+            modal.style.display = 'block';
+        });
+    });
+    closeButton.addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+    window.addEventListener('click', function(event) {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    });
+    const contactForm = document.getElementById('contact-form');
+    contactForm.addEventListener('submit', function(event) {
+        const name = contactForm.elements['name'];
+        const email = contactForm.elements['email'];
+        const message = contactForm.elements['message'];
+        if (!name.value.match(/^[a-zA-Z\s]+$/)) {
+            alert('Name should only contain letters and spaces.');
+            event.preventDefault();
+            return;
+        }
+        if (!email.value) {
+            alert('Please enter a valid email.');
+            event.preventDefault();
+            return;
+        }
+        if (!message.value) {
+            alert('Please enter your message.');
+            event.preventDefault();
+            return;
+        }
+    });
+});
